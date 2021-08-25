@@ -19,8 +19,8 @@
   },
   "projects": {
     "server": { "tags": [] },
-    "ui": { "tags": [] },
+    "ui": { "tags": [], "implicitDependencies": ["server"] },
     "ui-e2e": { "tags": [], "implicitDependencies": ["ui"] },
-    "desktop": { "tags": [] }
+    "desktop": { "tags": [], "implicitDependencies": ["ui", "server"] }
   }
 }
