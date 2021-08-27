@@ -24,7 +24,18 @@
 		{
 			"files": ["*.ts", "*.tsx"],
 			"extends": ["plugin:@nrwl/nx/typescript"],
-			"rules": {}
+			"rules": {
+				"max-len": ["warn", {"code":200}],
+				"no-trailing-spaces": "warn",
+				"key-spacing": ["warn", {"beforeColon": false, "afterColon": true, "mode": "minimum"}],
+				"semi": ["warn"],
+				"comma-dangle": ["warn", "always-multiline"],
+				"arrow-parens": ["warn", "as-needed"],
+				"quotes": ["error", "single", {"avoidEscape": true, "allowTemplateLiterals": true}],
+				"func-style": ["warn", "declaration"],
+				"eqeqeq": ["warn"],
+				"indent": ["warn", "tab", {"SwitchCase": 1}]
+			}
 		},
 		{
 			"files": ["*.js", "*.jsx"],

@@ -14,60 +14,60 @@ export default class SquirrelEvents {
   private static appFolder = resolve(process.execPath, '..');
   private static appRootFolder = resolve(SquirrelEvents.appFolder, '..');
   private static updateExe = resolve(
-    join(SquirrelEvents.appRootFolder, 'Update.exe')
+  	join(SquirrelEvents.appRootFolder, 'Update.exe'),
   );
   private static exeName = resolve(
-    join(
-      SquirrelEvents.appRootFolder,
-      'app-' + environment.version,
-      basename(process.execPath)
-    )
+  	join(
+  		SquirrelEvents.appRootFolder,
+  		'app-' + environment.version,
+  		basename(process.execPath),
+  	),
   );
 
   static handleEvents(): boolean {
-    if (process.argv.length === 1 || process.platform !== 'win32') {
-      return false;
-    }
+  	if (process.argv.length === 1 || process.platform !== 'win32') {
+  		return false;
+  	}
 
-    switch (process.argv[1]) {
-      case '--squirrel-install':
-      case '--squirrel-updated':
-        // Install desktop and start menu shortcuts
-        SquirrelEvents.update(['--createShortcut', SquirrelEvents.exeName]);
+  	switch (process.argv[1]) {
+  		case '--squirrel-install':
+  		case '--squirrel-updated':
+  			// Install desktop and start menu shortcuts
+  			SquirrelEvents.update(['--createShortcut', SquirrelEvents.exeName]);
 
-        return true;
+  			return true;
 
-      case '--squirrel-uninstall':
-        // Remove desktop and start menu shortcuts
-        SquirrelEvents.update(['--removeShortcut', SquirrelEvents.exeName]);
+  		case '--squirrel-uninstall':
+  			// Remove desktop and start menu shortcuts
+  			SquirrelEvents.update(['--removeShortcut', SquirrelEvents.exeName]);
 
-        return true;
+  			return true;
 
-      case '--squirrel-obsolete':
-        app.quit();
-        return true;
+  		case '--squirrel-obsolete':
+  			app.quit();
+  			return true;
 
-      case '--squirrel-firstrun':
-        // Check if it the first run of the software
-        SquirrelEvents.isAppFirstRun = true;
-        return false;
-    }
+  		case '--squirrel-firstrun':
+  			// Check if it the first run of the software
+  			SquirrelEvents.isAppFirstRun = true;
+  			return false;
+  	}
 
-    return false;
+  	return false;
   }
 
   static isFirstRun(): boolean {
-    return SquirrelEvents.isAppFirstRun;
+  	return SquirrelEvents.isAppFirstRun;
   }
 
   private static update(args: Array<string>) {
-    try {
-      spawn(SquirrelEvents.updateExe, args, { detached: true }).on(
-        'close',
-        () => setTimeout(app.quit, 1000)
-      );
-    } catch (error) {
-      setTimeout(app.quit, 1000);
-    }
+  	try {
+  		spawn(SquirrelEvents.updateExe, args, { detached: true }).on(
+  			'close',
+  			() => setTimeout(app.quit, 1000),
+  		);
+  	} catch (error) {
+  		setTimeout(app.quit, 1000);
+  	}
   }
 }
