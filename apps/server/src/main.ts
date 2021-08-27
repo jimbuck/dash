@@ -4,15 +4,23 @@
  */
 
 import * as express from 'express';
+import { createServer } from 'http';
+import { useGraphQL } from './middleware/graphql.middleware';
 
-const app = express();
+(async () => {
+	const app = express();
+	const httpServer = createServer(app);
 
-app.get('/api', (req, res) => {
-	res.send({ message: 'Welcome to server!' });
-});
+	app.get('/api', (req, res) => {
+		res.send({ message: 'Welcome to server!' });
+	});
 
-const port = process.env.port || 3333;
-const server = app.listen(port, () => {
-	console.log(`Listening at http://localhost:${port}/api`);
-});
-server.on('error', console.error);
+	useGraphQL({ app, httpServer, path: '/graphql' });
+
+	const port = process.env.port || 3333;
+	const server = app.listen(port, () => {
+		console.log(`Listening at http://localhost:${port}/api`);
+	});
+	server.on('error', console.error);
+
+})();

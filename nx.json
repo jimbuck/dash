@@ -1,26 +1,56 @@
 {
-  "npmScope": "dash",
-  "affected": { "defaultBase": "main" },
-  "implicitDependencies": {
-    "package.json": { "dependencies": "*", "devDependencies": "*" },
-    ".eslintrc.json": "*"
-  },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/nx-cloud",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
-        "accessToken": "MTdkZmMxZTAtY2JiNi00MmVjLWEyZTEtYjQ1NmE3Y2RmN2Q4fHJlYWQtd3JpdGU="
-      }
-    }
-  },
-  "targetDependencies": {
-    "build": [{ "target": "build", "projects": "dependencies" }]
-  },
-  "projects": {
-    "server": { "tags": [] },
-    "ui": { "tags": [], "implicitDependencies": ["server"] },
-    "ui-e2e": { "tags": [], "implicitDependencies": ["ui"] },
-    "desktop": { "tags": [], "implicitDependencies": ["ui", "server"] }
-  }
+	"npmScope": "dash",
+	"affected": {
+		"defaultBase": "main"
+	},
+	"implicitDependencies": {
+		"package.json": {
+			"dependencies": "*",
+			"devDependencies": "*"
+		},
+		".eslintrc.json": "*"
+	},
+	"tasksRunnerOptions": {
+		"default": {
+			"runner": "@nrwl/nx-cloud",
+			"options": {
+				"cacheableOperations": ["build", "lint", "test", "e2e"],
+				"accessToken": "MTdkZmMxZTAtY2JiNi00MmVjLWEyZTEtYjQ1NmE3Y2RmN2Q4fHJlYWQtd3JpdGU="
+			}
+		}
+	},
+	"targetDependencies": {
+		"build": [
+			{
+				"target": "build",
+				"projects": "dependencies"
+			}
+		]
+	},
+	"projects": {
+		"dal": {
+			"tags": []
+		},
+		"desktop": {
+			"tags": [],
+			"implicitDependencies": ["ui", "server"]
+		},
+		"models": {
+			"tags": []
+		},
+		"server": {
+			"tags": []
+		},
+		"ui": {
+			"tags": [],
+			"implicitDependencies": ["server"]
+		},
+		"ui-e2e": {
+			"tags": [],
+			"implicitDependencies": ["ui"]
+		},
+		"utils": {
+			"tags": []
+		}
+	}
 }
