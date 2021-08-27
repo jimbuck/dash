@@ -1,0 +1,41 @@
+{
+	"editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+	},
+  "todo-tree.general.tags": [
+    "BR", "TODO", "HACK", "NOTE"
+  ],
+  "todo-tree.highlights.defaultHighlight": {
+    "type": "text-and-comment",
+  },
+  "todo-tree.highlights.customHighlight": {
+    "TODO": {
+      "background": "#ffffff00",
+      "foreground": "#3abf9d",
+    },
+    "HACK": {
+      "icon": "beaker",
+      "iconColour": "#bf9d3a",
+      "background": "#ffffff00",
+      "foreground": "#bf9d3a",
+      "fontWeight": "bold",
+    },
+    "BR": {
+        "foreground": "#3a9fbf",
+        "icon": "clippy",
+        "iconColour": "#3a9fbf",
+    },
+    "NOTE": {
+      "icon": "megaphone",
+      "iconColour": "#6a4ac8",
+      "fontWeight": "bold",
+    }
+  },
+  "errorLens.exclude": [
+    "[\"Merge conflict marker encountered\"]"
+  ],
+	"typescript.tsdk": "node_modules\\typescript\\lib",
+	"cSpell.words": [
+		"maxsize"
+	]
+}
