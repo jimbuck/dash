@@ -1,11 +1,11 @@
 import { Service } from 'typedi';
-import { Resolver, Query } from 'type-graphql';
+import { Resolver, Query, ResolverInterface, FieldResolver, Root } from 'type-graphql';
 
-import { DatabaseService, Deck } from '@dash/dal';
+import { Board, DatabaseService, Deck } from '@dash/dal';
 
 @Service()
 @Resolver(Deck)
-export class DeckResolver {
+export class DeckResolver implements ResolverInterface<Deck> {
 	constructor(private readonly db: DatabaseService) {}
 
   @Query(() => [Deck], { description: 'Query for Decks.' })
@@ -13,4 +13,9 @@ export class DeckResolver {
 	): Promise<Deck[]> {
 		return (await this.db.decks.find()).map(d => new Deck(d));
 	}
+
+	@FieldResolver(() => [Board])
+  public async boards(@Root() deck: Deck): Promise<Board[]> {
+  	return (await this.db.boards.find(b => b.deckId === deck.id)).map(b => new Board(b));
+  }
 }
