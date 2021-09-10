@@ -4,8 +4,8 @@ import type { DebouncedFunc } from 'lodash';
 
 import { Low } from './database/lowdb';
 import { YAMLFile, JSONFile, BSONFile } from './database/adapters';
-import { Deck } from './models/deck';
 import { Board } from './models/board';
+import { Tile } from './models/tile';
 
 function NOOP() { /* noop */ }
 
@@ -20,8 +20,8 @@ export class DatabaseService  {
 	private _options: DatabaseOptions
 	private _db: Low<Omit<DatabaseService, 'connect' | 'saveChanges' | 'disconnect'>>;
 
-	public get decks(): Deck[] { return this._db.data.decks; }
 	public get boards(): Board[] { return this._db.data.boards; }
+	public get tiles(): Tile[] { return this._db.data.tiles; }
 
 	public saveChanges: DebouncedFunc<() => Promise<void>>;
 
@@ -45,16 +45,12 @@ export class DatabaseService  {
 		if (this._db.data) return;
 
 		this._db.data ??= {
-			decks: [
-				new Deck({ id: '1', name: 'Deck 1', description: 'This is a deck.', lastUpdated: new Date() }),
-				new Deck({ id: '2', name: 'Deck 2', lastUpdated: new Date() }),
-				new Deck({ id: '3', name: 'Deck 3', description: 'This is an unfinished deck.', lastUpdated: new Date() }),
-			],
 			boards: [
-				new Board({ id: '1', deckId: '2', name: 'Board 1', description: 'This is a board.', lastUpdated: new Date() }),
-				new Board({ id: '2', deckId: '2', name: 'Board 2', lastUpdated: new Date() }),
-				new Board({ id: '3', deckId: '1', name: 'Board A', description: 'This is another board.', lastUpdated: new Date() }),
+				new Board({ id: '1', name: 'Board 1', description: 'This is a board.', lastUpdated: new Date() }),
+				new Board({ id: '2', name: 'Board 2', lastUpdated: new Date() }),
+				new Board({ id: '3', name: 'Board A', description: 'This is another board.', lastUpdated: new Date() }),
 			],
+			tiles: [],
 		};
 
 		await this._db.write();

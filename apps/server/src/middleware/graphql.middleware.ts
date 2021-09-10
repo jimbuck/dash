@@ -1,6 +1,8 @@
 import * as http from 'http';
 
 import 'reflect-metadata';
+import 'class-validator';
+
 import { Container } from 'typedi';
 import { Application } from 'express';
 import { ApolloServer } from 'apollo-server-express';
@@ -13,8 +15,6 @@ import { scalarsMap } from '../types/scalars';
 import { ApolloContext } from '../models';
 import { loggingPlugin } from '../services/logger';
 
-
-import { DeckResolver } from '../resolvers/deck.resolver';
 import { BoardResolver } from '../resolvers/board.resolver';
 
 let schema: GraphQLSchema;
@@ -31,7 +31,6 @@ export async function executeLocalQuery<T>(source: string | Source, args?: Recor
 export async function generateSchema() {
 	return await buildSchema({
 		resolvers: [
-			DeckResolver,
 			BoardResolver,
 		],
 		container: Container,

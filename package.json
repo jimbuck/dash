@@ -42,6 +42,7 @@
 		"@graphql-tools/schema": "^8.1.2",
 		"apollo-server-express": "^3.3.0",
 		"bson": "^4.5.1",
+		"class-validator": "^0.13.1",
 		"core-js": "^3.6.5",
 		"express": "4.17.1",
 		"express-winston": "^4.1.0",
