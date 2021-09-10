@@ -15,6 +15,7 @@ import { loggingPlugin } from '../services/logger';
 
 
 import { DeckResolver } from '../resolvers/deck.resolver';
+import { BoardResolver } from '../resolvers/board.resolver';
 
 let schema: GraphQLSchema;
 
@@ -31,6 +32,7 @@ export async function generateSchema() {
 	return await buildSchema({
 		resolvers: [
 			DeckResolver,
+			BoardResolver,
 		],
 		container: Container,
 		emitSchemaFile: {

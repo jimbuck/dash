@@ -19,6 +19,7 @@
 		"lint:fix": "nx workspace-lint && nx run-many --target=lint --all -- --fix",
 		"e2e": "nx e2e",
 		"e2e:all": "nx run-many --target=e2e --all",
+		"clean": "del-cli \"node_modules/.cache/**\" dist",
 		"affected:apps": "nx affected:apps",
 		"affected:libs": "nx affected:libs",
 		"affected:build": "nx affected:build",
@@ -40,10 +41,12 @@
 	"dependencies": {
 		"@graphql-tools/schema": "^8.1.2",
 		"apollo-server-express": "^3.3.0",
+		"bson": "^4.5.1",
 		"core-js": "^3.6.5",
 		"express": "4.17.1",
 		"express-winston": "^4.1.0",
 		"graphql": "^15.5.1",
+		"lodash": "^4.17.21",
 		"next": "11.1.0",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
@@ -53,7 +56,8 @@
 		"tslib": "^2.0.0",
 		"type-graphql": "^1.1.1",
 		"typedi": "^0.10.0",
-		"winston": "^3.3.3"
+		"winston": "^3.3.3",
+		"yaml": "^1.10.2"
 	},
 	"devDependencies": {
 		"@nrwl/cli": "12.7.2",
@@ -72,6 +76,7 @@
 		"@testing-library/react": "11.2.6",
 		"@types/express": "4.17.0",
 		"@types/jest": "26.0.24",
+		"@types/lodash": "^4.14.172",
 		"@types/node": "14.14.33",
 		"@types/react": "17.0.3",
 		"@types/react-dom": "17.0.3",
@@ -79,6 +84,7 @@
 		"@typescript-eslint/parser": "~4.28.3",
 		"babel-jest": "27.0.6",
 		"cypress": "^7.3.0",
+		"del-cli": "^4.0.1",
 		"dotenv": "~10.0.0",
 		"electron": "^11.3.0",
 		"eslint": "7.22.0",

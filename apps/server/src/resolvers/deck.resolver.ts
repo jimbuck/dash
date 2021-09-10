@@ -11,11 +11,11 @@ export class DeckResolver implements ResolverInterface<Deck> {
   @Query(() => [Deck], { description: 'Query for Decks.' })
 	public async decks(
 	): Promise<Deck[]> {
-		return (await this.db.decks.find()).map(d => new Deck(d));
+		return this.db.decks.map(d => new Deck(d));
 	}
 
 	@FieldResolver(() => [Board])
   public async boards(@Root() deck: Deck): Promise<Board[]> {
-  	return (await this.db.boards.find(b => b.deckId === deck.id)).map(b => new Board(b));
+  	return this.db.boards.filter(b => b.deckId === deck.id).map(b => new Board(b));
   }
 }

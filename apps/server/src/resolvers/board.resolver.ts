@@ -9,9 +9,9 @@ export class BoardResolver implements ResolverInterface<Board> {
 	constructor(private readonly db: DatabaseService) {}
 
   @Query(() => [Board], { description: 'Query for Decks.' })
-	public async decks(
+	public async boards(
 	): Promise<Board[]> {
-		return (await this.db.boards.find()).map(b => new Board(b));
+		return this.db.boards.map(b => new Board(b));
 	}
 
 	@FieldResolver(() => [Tile])

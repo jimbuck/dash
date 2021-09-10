@@ -1,36 +1,67 @@
 import { Service } from 'typedi';
+import throttle from 'lodash/throttle';
+import type { DebouncedFunc } from 'lodash';
 
-import { Collection } from './db/collection';
+import { Low } from './database/lowdb';
+import { YAMLFile, JSONFile, BSONFile } from './database/adapters';
 import { Deck } from './models/deck';
 import { Board } from './models/board';
 
+function NOOP() { /* noop */ }
+
+export interface DatabaseOptions {
+	filename?: string;
+	throttle?: false | number;
+}
+
 @Service()
-export class DatabaseService {
+export class DatabaseService  {
 
-	public readonly decks = this.collection<Deck>('decks', [
-		new Deck({ id: '1', name: 'Deck 1', description: 'This is a deck.', lastUpdated: new Date() }),
-		new Deck({ id: '2', name: 'Deck 2', lastUpdated: new Date() }),
-		new Deck({ id: '3', name: 'Deck 3', description: 'This is an unfinished deck.', lastUpdated: new Date() }),
-	]);
+	private _options: DatabaseOptions
+	private _db: Low<Omit<DatabaseService, 'connect' | 'saveChanges' | 'disconnect'>>;
 
-	public readonly boards = this.collection<Board>('boards', [
-		new Board({ id: '1', deckId: '2', name: 'Board 1', description: 'This is a board.', lastUpdated: new Date() }),
-		new Board({ id: '2', deckId: '2', name: 'Board 2', lastUpdated: new Date() }),
-		new Board({ id: '3', deckId: '1', name: 'Board A', description: 'This is another board.', lastUpdated: new Date() }),
-	]);
+	public get decks(): Deck[] { return this._db.data.decks; }
+	public get boards(): Board[] { return this._db.data.boards; }
 
+	public saveChanges: DebouncedFunc<() => Promise<void>>;
 
+	public async connect(options: DatabaseOptions): Promise<void> {
+		this._options = Object.assign({ filename: 'db.yaml', throttle: false }, options);
 
-	public async connect(): Promise<void> {
-		// Setup DB.
+		this.saveChanges = this._options.throttle
+			? throttle(() => this._db.write(), this._options.throttle, { trailing: true })
+			: Object.assign(() => this._db.write(), { cancel: NOOP, flush: async () => this._db.write() });
+
+		this._db = new Low(
+			this._options.filename.endsWith('.yaml') ? new YAMLFile(this._options.filename)
+				: this._options.filename.endsWith('.json') ? new JSONFile(this._options.filename)
+					: new BSONFile(this._options.filename),
+		);
+
+		// Initialize the database
+		await this._db.read();
+
+		// Add seed data (remove if you don't want a seeded database)
+		if (this._db.data) return;
+
+		this._db.data ??= {
+			decks: [
+				new Deck({ id: '1', name: 'Deck 1', description: 'This is a deck.', lastUpdated: new Date() }),
+				new Deck({ id: '2', name: 'Deck 2', lastUpdated: new Date() }),
+				new Deck({ id: '3', name: 'Deck 3', description: 'This is an unfinished deck.', lastUpdated: new Date() }),
+			],
+			boards: [
+				new Board({ id: '1', deckId: '2', name: 'Board 1', description: 'This is a board.', lastUpdated: new Date() }),
+				new Board({ id: '2', deckId: '2', name: 'Board 2', lastUpdated: new Date() }),
+				new Board({ id: '3', deckId: '1', name: 'Board A', description: 'This is another board.', lastUpdated: new Date() }),
+			],
+		};
+
+		await this._db.write();
 	}
 
 	public async disconnect(): Promise<void> {
-		// Disconnect from DB.
-	}
-
-	private collection<T>(name: string, db: T[]): Collection<T> {
-		return new Collection<T>({ name, db });
+		await this.saveChanges.flush();
 	}
 }
 
