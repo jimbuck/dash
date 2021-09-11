@@ -18,7 +18,7 @@ export class BoardResolver implements ResolverInterface<Board> {
   @Query(() => [Board], { description: 'Query for Decks.' })
 	public boards(
 	): Board[] {
-		return this.db.boards.map(b => new Board(b));
+		return this.db.boards;
 	}
 
 	@FieldResolver(() => [Tile], { description: '' })

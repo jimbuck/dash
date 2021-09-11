@@ -17,6 +17,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"@dash/dal": ["libs/dal/src/index.ts"],
+			"@dash/graphql": ["libs/graphql/src/index.ts"],
 			"@dash/models": ["libs/models/src/index.ts"],
 			"@dash/utils": ["libs/utils/src/index.ts"]
 		}

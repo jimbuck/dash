@@ -35,6 +35,9 @@
 			"tags": [],
 			"implicitDependencies": ["ui", "server"]
 		},
+		"graphql": {
+			"tags": []
+		},
 		"models": {
 			"tags": []
 		},

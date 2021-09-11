@@ -1,0 +1,10 @@
+
+
+query boards{
+	boards {
+		id
+		name
+		description
+		lastUpdated
+	}
+}

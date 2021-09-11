@@ -18,3 +18,6 @@ npx nx generate @nrwl/workspace:lib models --linter eslint
 npx nx generate @nrwl/workspace:lib utils --linter eslint
 npx nx generate @nrwl/workspace:lib dal --linter eslint
 npx nx generate @nrwl/workspace:lib graphql --linter eslint
+
+# GraphQL Codegen
+npm i -D @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/introspection @graphql-codegen/time @graphql-codegen/near-operation-file-preset @graphql-codegen/typescript-apollo-client-helpers @graphql-codegen/typescript-operations @graphql-codegen/typescript-react-apollo

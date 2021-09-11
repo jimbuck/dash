@@ -9,6 +9,8 @@ import { Tile } from './models/tile';
 
 function NOOP() { /* noop */ }
 
+type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+
 export interface DatabaseOptions {
 	filename?: string;
 	throttle?: false | number;
@@ -18,7 +20,7 @@ export interface DatabaseOptions {
 export class DatabaseService  {
 
 	private _options: DatabaseOptions
-	private _db: Low<Omit<DatabaseService, 'connect' | 'saveChanges' | 'disconnect'>>;
+	private _db: Low<Writeable<Omit<DatabaseService, 'connect' | 'saveChanges' | 'disconnect'>>>;
 
 	public get boards(): Board[] { return this._db.data.boards; }
 	public get tiles(): Tile[] { return this._db.data.tiles; }
@@ -42,7 +44,12 @@ export class DatabaseService  {
 		await this._db.read();
 
 		// Add seed data (remove if you don't want a seeded database)
-		if (this._db.data) return;
+		if (this._db.data) {
+			this._db.data.boards = (this._db.data.boards ?? []).map(b => new Board(b));
+			this._db.data.tiles = (this._db.data.tiles ?? []).map(t => new Tile(t));
+
+			return;
+		}
 
 		this._db.data ??= {
 			boards: [

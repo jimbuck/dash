@@ -86,6 +86,35 @@
 						"jestConfig": "apps/desktop/jest.config.js",
 						"passWithNoTests": true
 					}
+				},
+				"dev": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run desktop:serve"
+            ]
+          }
+        }
+			}
+		},
+		"graphql": {
+			"root": "libs/graphql",
+			"sourceRoot": "libs/graphql/src",
+			"projectType": "library",
+			"targets": {
+				"lint": {
+					"executor": "@nrwl/linter:eslint",
+					"options": {
+						"lintFilePatterns": ["libs/graphql/**/*.ts"]
+					}
+				},
+				"test": {
+					"executor": "@nrwl/jest:jest",
+					"outputs": ["coverage/libs/graphql"],
+					"options": {
+						"jestConfig": "libs/graphql/jest.config.js",
+						"passWithNoTests": true
+					}
 				}
 			}
 		},
@@ -157,6 +186,15 @@
 						"jestConfig": "apps/server/jest.config.js",
 						"passWithNoTests": true
 					}
+				},
+				"dev": {
+					"executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run server:serve",
+              "graphql-codegen --config codegen.yml --watch"
+            ]
+          }
 				}
 			}
 		},
@@ -209,7 +247,15 @@
 					"options": {
 						"lintFilePatterns": ["apps/ui/**/*.{ts,tsx,js,jsx}"]
 					}
-				}
+				},
+				"dev": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx run ui:serve"
+            ]
+          }
+        }
 			}
 		},
 		"ui-e2e": {

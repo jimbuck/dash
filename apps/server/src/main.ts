@@ -3,15 +3,17 @@ import 'reflect-metadata';
 import express from 'express';
 import { createServer } from 'http';
 import { useDatabase } from './middleware/database.middleware';
-import { useGraphQL } from './middleware/graphql.middleware';
+import { useGraphQL, generateSchema } from './middleware/graphql.middleware';
 
 (async () => {
+
+	if (process.argv.includes('--generate-schema-then-exit')) {
+		await generateSchema();
+		return process.exit(0);
+	}
+
 	const app = express();
 	const httpServer = createServer(app);
-
-	app.get('/api', (req, res) => {
-		res.send({ message: 'Welcome to server!' });
-	});
 
 	await useDatabase({ filename: './dist/dash.yaml' });
 	await useGraphQL({ app, httpServer, path: '/graphql' });

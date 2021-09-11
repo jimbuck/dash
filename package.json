@@ -5,7 +5,7 @@
 	"scripts": {
 		"nx": "nx",
 		"start": "nx serve",
-		"dev": "nx run-many --target=serve --all --parallel",
+		"dev": "nx run-many --target=dev --all --parallel",
 		"build": "nx build",
 		"build:all": "nx run-many --target=build --all",
 		"build:prod": "nx run-many --target=build --all --prod",
@@ -35,10 +35,12 @@
 		"workspace-generator": "nx workspace-generator",
 		"dep-graph": "nx dep-graph",
 		"help": "nx help",
-		"postinstall": "exitzero electron-builder install-app-deps"
+		"postinstall": "exitzero electron-builder install-app-deps",
+		"codegen": "nx run server:build && node dist/apps/server/main --generate-schema-then-exit && graphql-codegen --config codegen.yml"
 	},
 	"private": true,
 	"dependencies": {
+		"@apollo/client": "^3.4.10",
 		"@graphql-tools/schema": "^8.1.2",
 		"apollo-server-express": "^3.3.0",
 		"bson": "^4.5.1",
@@ -61,6 +63,14 @@
 		"yaml": "^1.10.2"
 	},
 	"devDependencies": {
+		"@graphql-codegen/cli": "^2.2.0",
+		"@graphql-codegen/introspection": "^2.1.0",
+		"@graphql-codegen/near-operation-file-preset": "^2.1.4",
+		"@graphql-codegen/time": "^3.1.0",
+		"@graphql-codegen/typescript": "^2.2.2",
+		"@graphql-codegen/typescript-apollo-client-helpers": "^2.1.4",
+		"@graphql-codegen/typescript-operations": "^2.1.4",
+		"@graphql-codegen/typescript-react-apollo": "^3.1.4",
 		"@nrwl/cli": "12.7.2",
 		"@nrwl/cypress": "12.7.2",
 		"@nrwl/eslint-plugin-nx": "12.7.2",

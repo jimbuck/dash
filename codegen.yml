@@ -1,0 +1,52 @@
+overwrite: true
+schema: dist/apps/server/schema.graphql
+generates:
+  libs/graphql/src/types.generated.json:
+    config:
+      minify: true
+      schemaDescription: true
+    plugins:
+      - introspection
+  libs/graphql/src/types.generated.ts:
+    config:
+      minify: true
+      skipTypename: true
+      useTypeImports: true
+      scalars:
+        DateTime: Date
+        DateOnly: DateOnly
+    plugins:
+      - add:
+          content:
+            - '/* eslint-disable */'
+            - "import { DateOnly } from '@dash/models';"
+      - time
+      - typescript
+      - typescript-apollo-client-helpers
+  /:
+    preset: 'near-operation-file'
+    documents:
+      - ./libs/*/src/**/*.graphql
+      - ./apps/*/src/**/*.graphql
+      - ./apps/ui/**/*.graphql
+    presetConfig:
+      extension: .generated.ts
+      baseTypesPath: ~@dash/graphql
+    plugins:
+      - add:
+          content:
+            - '/* eslint-disable */'
+            - "import { DateOnly } from '@dash/models';"
+      - time
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      preResolveTypes: true
+      skipTypename: true
+      useTypeImports: true
+      documentMode: documentNode
+      pureMagicComment: true
+      serviceProvidedInRoot: true
+      scalars:
+        DateTime: Date
+        DateOnly: DateOnly

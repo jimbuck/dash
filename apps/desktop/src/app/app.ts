@@ -13,8 +13,7 @@ export default class App {
 
   public static isDevelopmentMode() {
   	const isEnvironmentSet: boolean = 'ELECTRON_IS_DEV' in process.env;
-  	const getFromEnvironment: boolean =
-      parseInt(process.env.ELECTRON_IS_DEV, 10) === 1;
+  	const getFromEnvironment: boolean = parseInt(process.env.ELECTRON_IS_DEV, 10) === 1;
 
   	return isEnvironmentSet ? getFromEnvironment : !environment.production;
   }
@@ -70,6 +69,7 @@ export default class App {
   			contextIsolation: true,
   			backgroundThrottling: false,
   			preload: join(__dirname, 'preload.js'),
+  			devTools: true,
   		},
   	});
   	App.mainWindow.setMenu(null);
@@ -78,6 +78,8 @@ export default class App {
   	// if main window is ready to show, close the splash window and show the main window
   	App.mainWindow.once('ready-to-show', () => {
   		App.mainWindow.show();
+
+  		App.mainWindow.webContents.openDevTools();
   	});
 
   	// handle all external redirects in a new browser window
