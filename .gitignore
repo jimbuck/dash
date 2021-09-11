@@ -40,3 +40,4 @@ Thumbs.db
 
 # Custom Entries
 logs
+*.generated.*
