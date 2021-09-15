@@ -9,6 +9,19 @@ import { Adapter } from './lowdb';
 
 YAML.defaultOptions.customTags = ['timestamp'];
 
+export class Memory<T> implements Adapter<T> {
+  private data: T | null = null
+
+  public read(): Promise<T | null> {
+  	return Promise.resolve(this.data);
+  }
+
+  public write(obj: T): Promise<void> {
+  	this.data = obj;
+  	return Promise.resolve();
+  }
+}
+
 class TextFile implements Adapter<string> {
   private filename: string
   private writer: Writer

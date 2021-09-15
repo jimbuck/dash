@@ -2,14 +2,11 @@ import { Service } from 'typedi';
 import throttle from 'lodash/throttle';
 import type { DebouncedFunc } from 'lodash';
 
+import { Writeable, NOOP } from '@dash/utils';
+
 import { Low } from './database/lowdb';
-import { YAMLFile, JSONFile, BSONFile } from './database/adapters';
-import { Board } from './models/board';
-import { Tile } from './models/tile';
-
-function NOOP() { /* noop */ }
-
-type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+import { YAMLFile, JSONFile, BSONFile, Memory } from './database/adapters';
+import { Board, Tile, Plugin } from './models';
 
 export interface DatabaseOptions {
 	filename?: string;
@@ -20,10 +17,11 @@ export interface DatabaseOptions {
 export class DatabaseService  {
 
 	private _options: DatabaseOptions
-	private _db: Low<Writeable<Omit<DatabaseService, 'connect' | 'saveChanges' | 'disconnect'>>>;
+	private _db: Low<Writeable<Omit<DatabaseService, 'connect' | 'saveChanges' | 'disconnect'|'registerPlugin' | 'plugins'>>>;
 
 	public get boards(): Board[] { return this._db.data.boards; }
 	public get tiles(): Tile[] { return this._db.data.tiles; }
+	public readonly plugins: Plugin[] = [];
 
 	public saveChanges: DebouncedFunc<() => Promise<void>>;
 
@@ -35,9 +33,10 @@ export class DatabaseService  {
 			: Object.assign(() => this._db.write(), { cancel: NOOP, flush: async () => this._db.write() });
 
 		this._db = new Low(
-			this._options.filename.endsWith('.yaml') ? new YAMLFile(this._options.filename)
+			(this._options.filename.endsWith('.yaml') || this._options.filename.endsWith('.yml')) ? new YAMLFile(this._options.filename)
 				: this._options.filename.endsWith('.json') ? new JSONFile(this._options.filename)
-					: new BSONFile(this._options.filename),
+					: this._options.filename.endsWith('.bson') ? new BSONFile(this._options.filename)
+						: new Memory(),
 		);
 
 		// Initialize the database
@@ -65,6 +64,10 @@ export class DatabaseService  {
 
 	public async disconnect(): Promise<void> {
 		await this.saveChanges.flush();
+	}
+
+	public registerPlugin(plugin: Plugin): void {
+		this.plugins.push(new Plugin(plugin));
 	}
 }
 

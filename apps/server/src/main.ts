@@ -15,7 +15,7 @@ import { useGraphQL, generateSchema } from './middleware/graphql.middleware';
 	const app = express();
 	const httpServer = createServer(app);
 
-	await useDatabase({ filename: './dist/dash.yaml' });
+	await useDatabase({ filename: './dist/db.yml' });
 	await useGraphQL({ app, httpServer, path: '/graphql' });
 
 	const port = process.env.port || 3333;

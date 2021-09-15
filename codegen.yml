@@ -19,7 +19,7 @@ generates:
       - add:
           content:
             - '/* eslint-disable */'
-            - "import { DateOnly } from '@dash/models';"
+            - "import { DateOnly } from '@dash/utils';"
       - time
       - typescript
       - typescript-apollo-client-helpers
@@ -36,7 +36,7 @@ generates:
       - add:
           content:
             - '/* eslint-disable */'
-            - "import { DateOnly } from '@dash/models';"
+            - "import { DateOnly } from '@dash/utils';"
       - time
       - typescript-operations
       - typescript-react-apollo

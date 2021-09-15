@@ -34,7 +34,7 @@
 				"quotes": ["error", "single", {"avoidEscape": true, "allowTemplateLiterals": true}],
 				"func-style": ["warn", "declaration"],
 				"eqeqeq": ["warn"],
-				"indent": ["warn", "tab", {"SwitchCase": 1}]
+				"indent": ["error", "tab", {"SwitchCase": 1}]
 			}
 		},
 		{

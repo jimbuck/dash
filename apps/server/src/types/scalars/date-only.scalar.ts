@@ -1,5 +1,5 @@
 import { GraphQLScalarType, Kind } from 'graphql';
-import { DateOnly } from '@dash/models';
+import { DateOnly } from '@dash/utils';
 
 export const DateOnlyScalar = new GraphQLScalarType({
 	name: 'DateOnly',

@@ -11,5 +11,5 @@
 		"**/*.spec.js",
 		"**/*.spec.jsx",
 		"**/*.d.ts"
-	]
+, "../utils/src/models/date-only.spec.ts"	]
 }
